@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+
+    <div class="target">
+
+    </div>
+
+    <div class="target">
+
+    </div>
+    
+    <div class="target">
+
+    </div>
+
+    <div id="app">
+
+    </div>
+
+    <script src="../dist/elektra.min.js"></script>
+
+    <script>
+
+        const { create , property , css , bite  , clone } = elektra(document);
+        const { div , h1 , h2 , h3 , p , ul , li , a } = create;
+        const { class$ , add , remove } = css;
+        const { id , href} = property;
+
+        const dataset = (dataset) => {
+            return (element) => 
+                Object.keys(dataset).reduce( (element , key) =>  {
+                    element.dataset[key] = dataset(key);
+                    return element;
+                }, element)
+        }
+
+        
+        const tree = div(
+            h1( id("title") , class$("test aaaa") , "title" ),
+            p("caption"),
+            h2( id("sub-title") , "sub title"),
+            p("sub caption"),
+            div(
+                h3("nav1"),
+                ul(
+                    ["list1" , "list2" , "list3"].map( tx => li( a( href("test") , tx) ) )
+                ),
+                h3("nav2"),
+                ul(
+                    ["list1" , "list2" , "list3"].map( tx => li( a( href("test") , tx) ) )
+                ),
+                h3("nav3"),
+                ul(
+                    ["list1" , "list2" , "list3"].map( tx => li( a( href("test") , tx) ) )
+                )
+            )
+        );
+
+        bite.id("app")(tree)
+        bite.find(".target")( clone(div("test")) )
+
+
+    </script>
+
+</body>
+</html>
