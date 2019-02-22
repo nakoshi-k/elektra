@@ -4,7 +4,12 @@
   "description": "dom operation library",
   "main": "/dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:tsc" : "./node_modules/.bin/tsc",
+    "build:es6" : "./node_modules/.bin/webpack --config ./webpack.config.js",
+    "build:es5" : "./node_modules/.bin/webpack --config ./webpack.config.es5.js",
+    "watch" : "npm run build:tsc -- -w & npm run build:es6 -- --watch & npm run build:es5 -- --watch",
+    "build:production" : " tsc & npm run build:es6 -- --mode=\"production\" & npm run build:es5 -- --mode=\"production\""
   },
   "author": "kei nakoshi",
   "license": "ISC",

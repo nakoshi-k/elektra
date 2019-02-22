@@ -1,7 +1,8 @@
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const path = require("path");
-module.exports = {
-    mode: 'production',
+
+const config = {
+    mode: 'development',
     entry: {
         "app" : __dirname + '/src/index.ts',
         },
@@ -41,3 +42,12 @@ module.exports = {
         ]
     }
   };
+
+const mode = (process.argv.find(arg => arg.slice(0,6) === "--mode") 
+|| "").replace("--mode=","") || config.mode
+
+const min = (mode === "production") ? ".min" : "";
+
+config.output.filename = `elektra${min}.js`
+
+module.exports = config

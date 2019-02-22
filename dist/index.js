@@ -20,7 +20,7 @@ exports.default = (d = document) => {
         operation,
         driver,
         create,
-        bite: bite(d),
+        bite,
         css: css_1.default,
         event: event_1.default,
         property: property_1.default,

@@ -5,40 +5,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const driver_1 = __importDefault(require("./driver"));
 const operation_1 = __importDefault(require("./operation"));
-const createFakeNodeList = (...children) => {
-    let positon = 0;
-    const fakeNodeList = {
-        item: (index) => children[index] || null,
-        namedItem: (name) => children.find(child => child.id === name || child.getAttribute("name") === name) || null,
-        [Symbol.iterator]: () => {
-            const result = (children[positon + 1])
-                ? { value: children[positon], done: false }
-                : { value: children[positon], done: true };
-            positon++;
-            return result;
-        },
-        forEach: (eachFunction) => {
-            children.forEach(child => eachFunction(child));
-        }
-    };
-    Object.defineProperty(fakeNodeList, "length", {
-        get: () => children.length
-    });
-    return children.reduce((likeNodeList, child, index) => {
-        likeNodeList[index] = child;
-        return likeNodeList;
-    }, fakeNodeList);
-};
+const fake_node_list_1 = __importDefault(require("./fake-node-list"));
 exports.default = (driver = driver_1.default(operation_1.default(document).append)) => (parent = document) => {
     const id = (id) => (...filters) => driver((() => {
         if (parent === document) {
             const element = parent.getElementById(id.replace(/^\#/, ""));
             if (element) {
-                return createFakeNodeList(element);
+                return fake_node_list_1.default([element]);
             }
-            return createFakeNodeList();
+            return fake_node_list_1.default([]);
         }
-        return document.querySelectorAll(`#{id.replace(/^\#/,")}`);
+        return document.querySelectorAll(`#${id.replace(/^\#/, "")}`);
     })())(...filters);
     const find = (queryString) => (...filters) => driver(parent.querySelectorAll(queryString))(...filters);
     const name = (name) => (...filters) => driver((() => {

@@ -1,13 +1,13 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const toKebab = (str) => {
-    return str.replace(/([^_-])([A-Z])/g, "$1-$2")
-        .replace(/_/gi, "-").toLowerCase();
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
 };
+Object.defineProperty(exports, "__esModule", { value: true });
+const to_kebab_1 = __importDefault(require("./to-kebab"));
 exports.default = new Proxy({}, {
     "get": (target, name) => {
         return (value) => (element) => {
-            element.setAttribute(toKebab(name), value);
+            element.setAttribute(to_kebab_1.default(name), value);
             return element;
         };
     }

@@ -24,7 +24,7 @@
 
     </div>
 
-    <script src="../dist/elektra.min.js"></script>
+    <script src="../dist/elektra.js"></script>
 
     <script>
 
@@ -36,21 +36,27 @@
         const dataset = (dataset) => {
             return (element) => 
                 Object.keys(dataset).reduce( (element , key) =>  {
-                    element.dataset[key] = dataset(key);
+                    element.dataset[key] = dataset[key];
                     return element;
                 }, element)
         }
 
+
         
         const content = xTag(
-            h1( id("title") , class$("test aaaa") , "title" , event.add.click((e) => alert("test")) ),
-            p("caption"),
+            h1( id("title") , class$("test aaaa") , event.add.click((e) => alert("test")) , "たのしいDOM生成" ),
+            p( "caption" ),
             h2( id("sub-title") , "sub title"),
             p("sub caption"),
             div(
                 h3("nav1"),
                 ul(
-                    ["list1" , "list2" , "list3"].map( tx => li( a( href("test") , tx) ) )
+                    [...Array(3).keys()].map( index => li( a( href("#") , "list" + index) , event.add.click(e => alert("test")) ,
+                            ul(
+                                [...Array(3).keys()].map( index => li( a( href("#") , "sublist" + index) , event.add.click(e => alert("test")) ) )
+                            )
+                        )
+                    ),
                 ),
                 h3("nav2"),
                 ul(
@@ -62,8 +68,9 @@
                 )
             )
         );
-        const c = bite().id("app")(content)
+        const c = bite().id("app")(clone(content))
         bite().find(".target")( clone(div("test")) )
+
 
 
     </script>

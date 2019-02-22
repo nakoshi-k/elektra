@@ -27,9 +27,14 @@ const drive = (element : HTMLElement , append = operaion(document).append ) =>
 
 export default ( append? : any ) => (nodeLike: NodeLike) =>
     (...filters : FilterOrElement[]) => {
-        if(!filters) return ((<HTMLElement>nodeLike)["tagName"] === void 0) ? nodeLike : fakeNodeList([<Element>nodeLike]);
 
-        [].slice.call( ( (<HTMLElement>nodeLike)["tagName"] === void 0) ? nodeLike : fakeNodeList([<Element>nodeLike]) ).forEach( (element:HTMLElement) => {
+        if(!filters) return ((<HTMLElement>nodeLike)["tagName"] === void 0)
+            ? nodeLike
+            : fakeNodeList([<Element>nodeLike]);
+
+        [].slice.call( ( (<HTMLElement>nodeLike)["tagName"] === void 0) 
+            ? nodeLike
+            : fakeNodeList([<Element>nodeLike]) ).forEach( (element:HTMLElement) => {
             drive(element,append)(...filters)
         });
         return <NodeLike>nodeLike
