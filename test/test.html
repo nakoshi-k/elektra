@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+
+    <script>
+    
+const createLikeNodeList = (children) => {
+    const positon = 0;
+    const likeNodeList = {
+            item: ( index ) => 
+                children[index] || null,
+            namedItem:  ( name ) => 
+                children.find(child => child.id === name || child.getAttribute("name") === name) || null,
+            [Symbol.iterator] : ()=> {
+                const result = (children[positon+1])
+                    ? {value : children[positon] , done : false} 
+                    : {value : children[positon] , done : true} 
+                positon++
+                return result;
+            },
+            forEach : (eachFunction) => {
+                children.forEach(child => eachFunction(child))
+            }
+        }
+    Object.defineProperty(likeNodeList,"length" , {
+        get : () => children.length
+    })
+    return Object.freeze(children.reduce( (likeNodeList,child ,index) => {
+        likeNodeList[index] = child
+        return likeNodeList
+    } , likeNodeList))
+ }
+
+const test = createLikeNodeList([document.createElement("div"),document.createElement("div")])
+
+console.log([].slice.call(test))
+
+    </script>
+
+</body>
+</html>

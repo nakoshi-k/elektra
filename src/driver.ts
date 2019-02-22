@@ -1,36 +1,36 @@
 import operaion from "./operation";
-export type NodeLike = HTMLElement|HTMLCollection|NodeList|Document
+import fakeNodeList,{FakeNodeListInterface as FakeNodeList} from "./fake-node-list"
 
-export type Filter = (element : HTMLElement) => HTMLElement|HTMLElement|string
+export type NodeLike = HTMLElement|HTMLCollection|NodeList|Document|FakeNodeList
+
+export type FilterOrElement = (element : HTMLElement) => HTMLElement|HTMLElement|string
 
 export interface Driver{
-    (element : NodeLike) : (...filter : Filter[]) => NodeLike
+    (element : NodeLike) : (...filter : FilterOrElement[]) => NodeLike
 }
 
 export interface DriverInit{
-    (...filters:Filter[]) : (noddelike:NodeLike) => NodeLike
+    (...filters:FilterOrElement[]) : (noddelike:NodeLike) => NodeLike
 }
 
 const drive = (element : HTMLElement , append = operaion(document).append ) => 
-    (...filters : Filter[]) => 
+    (...filters : FilterOrElement[]) => 
     filters.reduce( (element,filter : any ) => {
-        
         if(typeof filter !=="function" ){
             if(Array.isArray(filter)){
                 return append(...filter)(element)
             }
             return append(filter)(element)
         }
-
         return filter(element)
     }, element);
 
-export default ( append? : any ) => (nl: NodeLike) =>
-    (...filters : Filter[]) => {
-        if(!filters) return nl;
+export default ( append? : any ) => (nodeLike: NodeLike) =>
+    (...filters : FilterOrElement[]) => {
+        if(!filters) return ((<HTMLElement>nodeLike)["tagName"] === void 0) ? nodeLike : fakeNodeList([<Element>nodeLike]);
 
-        [].slice.call( ( (<HTMLElement>nl)["tagName"] === void 0) ? nl : [nl] ).forEach(element => {
+        [].slice.call( ( (<HTMLElement>nodeLike)["tagName"] === void 0) ? nodeLike : fakeNodeList([<Element>nodeLike]) ).forEach( (element:HTMLElement) => {
             drive(element,append)(...filters)
         });
-        return <NodeLike>nl
+        return <NodeLike>nodeLike
     }

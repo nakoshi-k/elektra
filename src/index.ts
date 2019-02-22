@@ -17,7 +17,7 @@ export default ( d = document ) => {
         operation,
         driver,
         create,
-        bite : bite(d),
+        bite,
         css,
         event,
         property,

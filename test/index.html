@@ -28,10 +28,10 @@
 
     <script>
 
-        const { create , property , css , bite  , clone } = elektra(document);
-        const { div , h1 , h2 , h3 , p , ul , li , a } = create;
+        const { create , property , css , bite , clone , event } = elektra(document);
+        const { div , h1 , h2 , h3 , p , ul , li , a , xTag } = create;
         const { class$ , add , remove } = css;
-        const { id , href} = property;
+        const { id , href } = property;
 
         const dataset = (dataset) => {
             return (element) => 
@@ -42,8 +42,8 @@
         }
 
         
-        const tree = div(
-            h1( id("title") , class$("test aaaa") , "title" ),
+        const content = xTag(
+            h1( id("title") , class$("test aaaa") , "title" , event.add.click((e) => alert("test")) ),
             p("caption"),
             h2( id("sub-title") , "sub title"),
             p("sub caption"),
@@ -62,9 +62,8 @@
                 )
             )
         );
-
-        bite.id("app")(tree)
-        bite.find(".target")( clone(div("test")) )
+        const c = bite().id("app")(content)
+        bite().find(".target")( clone(div("test")) )
 
 
     </script>

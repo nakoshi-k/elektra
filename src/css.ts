@@ -12,7 +12,6 @@ const remove = (...removeClass:string[]) => {
     }
 }
 
-
 const toggle = (...removeClass:string[]) => {
     return (element : HTMLElement) => {
         element.classList.remove(...removeClass)
