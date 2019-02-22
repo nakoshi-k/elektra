@@ -8,38 +8,28 @@
 </head>
 <body>
 
+    <div class="target"> test <span class="remove">[x]</span></div>
+    <div class="target"> test <span class="remove">[x]</span></div>
+    <div class="target"> test <span class="remove">[x]</span></div>
+    <div class="target"> test <span class="remove">[x]</span></div>
+    <div class="target"> test <span class="remove">[x]</span></div>
+    <div class="target"> test <span class="remove">[x]</span></div>
+    <div class="target"> test <span class="remove">[x]</span></div>
+    <div class="target"> test <span class="remove">[x]</span></div>
+
+    <script src="../dist/elektra.js"></script>
+
     <script>
-    
-const createLikeNodeList = (children) => {
-    const positon = 0;
-    const likeNodeList = {
-            item: ( index ) => 
-                children[index] || null,
-            namedItem:  ( name ) => 
-                children.find(child => child.id === name || child.getAttribute("name") === name) || null,
-            [Symbol.iterator] : ()=> {
-                const result = (children[positon+1])
-                    ? {value : children[positon] , done : false} 
-                    : {value : children[positon] , done : true} 
-                positon++
-                return result;
-            },
-            forEach : (eachFunction) => {
-                children.forEach(child => eachFunction(child))
-            }
+        const {bite,event} = elektra();
+        const removeEvent = e => alert("remove");
+        const remove = el => {
+            bite(el).find(".remove")( event.add.click((e) => {
+                el.parentNode.removeChild(el);
+            }) )
+            return el
         }
-    Object.defineProperty(likeNodeList,"length" , {
-        get : () => children.length
-    })
-    return Object.freeze(children.reduce( (likeNodeList,child ,index) => {
-        likeNodeList[index] = child
-        return likeNodeList
-    } , likeNodeList))
- }
 
-const test = createLikeNodeList([document.createElement("div"),document.createElement("div")])
-
-console.log([].slice.call(test))
+        bite().find(".target")(remove)
 
     </script>
 

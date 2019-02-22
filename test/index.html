@@ -8,8 +8,10 @@
 </head>
 <body>
 
-    <div class="target">
 
+
+    <div class="target">
+        <input type="text" pattern="/\A[a-z0-9\.\_]@/">
     </div>
 
     <div class="target">
@@ -29,7 +31,7 @@
     <script>
 
         const { create , property , css , bite , clone , event } = elektra(document);
-        const { div , h1 , h2 , h3 , p , ul , li , a , xTag } = create;
+        const { div , h1 , h2 , h3 , p , ul , li , a , xTag , myTag } = create;
         const { class$ , add , remove } = css;
         const { id , href } = property;
 
@@ -40,20 +42,20 @@
                     return element;
                 }, element)
         }
-
-
         
-        const content = xTag(
-            h1( id("title") , class$("test aaaa") , event.add.click((e) => alert("test")) , "たのしいDOM生成" ),
+        const content = myTag(
+            h1( id("title") , class$("test aaaa") , add("bbbb") , event.add.click((e) => alert("test")) , dataset({test:"aaa",test2 : "bbb"}) , "たのしいDOM生成" ),
             p( "caption" ),
             h2( id("sub-title") , "sub title"),
             p("sub caption"),
             div(
                 h3("nav1"),
                 ul(
-                    [...Array(3).keys()].map( index => li( a( href("#") , "list" + index) , event.add.click(e => alert("test")) ,
+                    [...Array(3).keys()].map( index => 
+                        li( 
+                            a( href("#") , "list" + index) , event.add.click(e => alert("test")) ,
                             ul(
-                                [...Array(3).keys()].map( index => li( a( href("#") , "sublist" + index) , event.add.click(e => alert("test")) ) )
+                                    [...Array(3).keys()].map( index => li( a( href("#") , "sublist" + index) , event.add.click(e => alert("test")) ) )
                             )
                         )
                     ),
@@ -68,8 +70,8 @@
                 )
             )
         );
-        const c = bite().id("app")(clone(content))
-        bite().find(".target")( clone(div("test")) )
+        const c = bite().id("app")(content)
+        
 
 
 
