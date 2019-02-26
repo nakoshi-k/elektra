@@ -4,7 +4,7 @@ export interface FakeNodeListInterface{
     item : (index:number) => Element | null,
     length : number
     namedItem : (name:string) => Element | null,
-    [Symbol.iterator] : () => {value : Element,done:boolean},
+    [Symbol.iterator] : () => { next : () => {value : Element,done:boolean}},
     forEach : (eachFunction : ForEachCallback) => void
 } 
 
@@ -30,11 +30,15 @@ class FakeNodeList implements FakeNodeListInterface{
         this.items.forEach( (item,index,items) => eachFunction(item,index,items));
     
     [Symbol.iterator] = ()=> {
-        const result = (this.items[this.current+1])
-            ? {value : this.items[this.current] , done : false} 
-            : {value : this.items[this.current] , done : true} 
-        this.current++
-        return result;
+        return {
+            next : () => {
+                const result = (this.items[this.current+1])
+                ? {value : this.items[this.current] , done : false} 
+                : {value : this.items[this.current] , done : true} 
+                this.current++
+                return result;
+            }
+        }
     }
     [key:number] :Element
  }

@@ -28,6 +28,9 @@ exports.default = (driver = driver_1.default(operation_1.default(document).appen
         id,
         find,
         name,
-        tag
+        tag,
+        drive: (...filters) => {
+            return driver(parent)(...filters);
+        }
     };
 };

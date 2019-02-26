@@ -10,7 +10,6 @@ const bite_1 = __importDefault(require("./bite"));
 const css_1 = __importDefault(require("./css"));
 const event_1 = __importDefault(require("./event"));
 const property_1 = __importDefault(require("./property"));
-const clone_1 = __importDefault(require("./clone"));
 exports.default = (d = document) => {
     const operation = operation_1.default(d);
     const driver = driver_1.default(operation.append);
@@ -23,7 +22,6 @@ exports.default = (d = document) => {
         bite,
         css: css_1.default,
         event: event_1.default,
-        property: property_1.default,
-        clone: clone_1.default
+        property: property_1.default
     };
 };

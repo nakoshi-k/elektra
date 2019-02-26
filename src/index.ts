@@ -5,7 +5,7 @@ import $bite from "./bite"
 import css from "./css"
 import event from "./event"
 import property from "./property"
-import clone from "./clone"
+
 
 
 export default ( d = document ) => {
@@ -20,7 +20,6 @@ export default ( d = document ) => {
         bite,
         css,
         event,
-        property,
-        clone
+        property
     }
 }

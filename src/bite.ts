@@ -33,6 +33,9 @@ export default  (driver = $driver($operation(document).append) ) => (parent : HT
         id,
         find,
         name,
-        tag
+        tag,
+        drive : (...filters:FilterOrElement[]) => {
+            return driver(parent)(...filters)
+        }
     }
 }
