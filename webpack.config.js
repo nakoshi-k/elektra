@@ -24,7 +24,6 @@ const config = {
         plugins: [new TsconfigPathsPlugin({
             configFile:  __dirname + "/tsconfig.json"
         }
-        
         )], 
     },
     devtool : "hidden-source-map",

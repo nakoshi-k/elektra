@@ -31,7 +31,7 @@ export const once = (type : EventType,listener:EventListener,options? : listener
 
 const eventProxy = (type : "add" | "remove" , baseOptions = {} ) => <{[key:string] : (listener : (e : Event) => void , options? : {}) => HTMLElement}>new Proxy({},{
     "get" : (target,eventType :EventType) => {
-        return ( listener : (e : Event) => void , options = {}) => (element : HTMLElement) => {
+        return ( listener : (e : Event) => void , options : {[key:string] : string} = {}) => (element : HTMLElement) => {
             if(type === "add"){
                 element.addEventListener(eventType.replace(/\$$/,""),listener,Object.assign(options,baseOptions))
                 return element

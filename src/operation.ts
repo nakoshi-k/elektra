@@ -2,7 +2,7 @@
 
 export default (d = document) => {
 
-    const toNode = (element : HTMLElement|Element|string,clone = true) => {
+    const toNode = (element : HTMLElement|Element|string,clone = false) => {
         if( element !== Object(element)){
             return d.createTextNode(`${element}`)
         }
@@ -13,7 +13,7 @@ export default (d = document) => {
     }
     
     const append = (...append : (HTMLElement|Element|string)[]) => 
-        (element : HTMLElement ,clone = true) => {
+        (element : HTMLElement ,clone = false) => {
     
             element.appendChild( append.reduce((flg,a) => {
             flg.appendChild(toNode(a,clone))
@@ -24,7 +24,7 @@ export default (d = document) => {
     }
     
     const prepend = (...append : (HTMLElement|Element|string)[]) =>
-        (element : HTMLElement,clone = true) => {
+        (element : HTMLElement,clone = false) => {
         element.insertBefore( append.reduce((flg,a) => {
             flg.appendChild(toNode(a , clone))
             return flg
@@ -33,20 +33,20 @@ export default (d = document) => {
     } 
     
     const before = (append : HTMLElement,ref:HTMLElement) =>
-        (element : HTMLElement,clone = true) => {
+        (element : HTMLElement,clone = false) => {
             element.insertBefore(toNode(append,clone),ref)
             return element
         }
     
     const after = (append : HTMLElement,ref:HTMLElement) =>
-        (element : HTMLElement , clone = true) => {
+        (element : HTMLElement , clone = false) => {
             element.insertBefore(toNode(append,clone),ref.previousSibling)
             return element
         }
     
     const replace = (replace: HTMLElement|Element|string,old : Element |HTMLElement) =>
-        (element : HTMLElement,clone = true) => {
-            element.replaceChild( toNode(replace,true) ,old )
+        (element : HTMLElement,clone = false) => {
+            element.replaceChild( toNode(replace,clone) ,old )
             return element
         }
 

@@ -1,66 +1,7 @@
 window["elektra"] =
 /******/ (function(modules) { // webpackBootstrap
-/******/ 	// install a JSONP callback for chunk loading
-/******/ 	function webpackJsonpCallback(data) {
-/******/ 		var chunkIds = data[0];
-/******/ 		var moreModules = data[1];
-/******/ 		var executeModules = data[2];
-/******/
-/******/ 		// add "moreModules" to the modules object,
-/******/ 		// then flag all "chunkIds" as loaded and fire callback
-/******/ 		var moduleId, chunkId, i = 0, resolves = [];
-/******/ 		for(;i < chunkIds.length; i++) {
-/******/ 			chunkId = chunkIds[i];
-/******/ 			if(installedChunks[chunkId]) {
-/******/ 				resolves.push(installedChunks[chunkId][0]);
-/******/ 			}
-/******/ 			installedChunks[chunkId] = 0;
-/******/ 		}
-/******/ 		for(moduleId in moreModules) {
-/******/ 			if(Object.prototype.hasOwnProperty.call(moreModules, moduleId)) {
-/******/ 				modules[moduleId] = moreModules[moduleId];
-/******/ 			}
-/******/ 		}
-/******/ 		if(parentJsonpFunction) parentJsonpFunction(data);
-/******/
-/******/ 		while(resolves.length) {
-/******/ 			resolves.shift()();
-/******/ 		}
-/******/
-/******/ 		// add entry modules from loaded chunk to deferred list
-/******/ 		deferredModules.push.apply(deferredModules, executeModules || []);
-/******/
-/******/ 		// run deferred modules when all chunks ready
-/******/ 		return checkDeferredModules();
-/******/ 	};
-/******/ 	function checkDeferredModules() {
-/******/ 		var result;
-/******/ 		for(var i = 0; i < deferredModules.length; i++) {
-/******/ 			var deferredModule = deferredModules[i];
-/******/ 			var fulfilled = true;
-/******/ 			for(var j = 1; j < deferredModule.length; j++) {
-/******/ 				var depId = deferredModule[j];
-/******/ 				if(installedChunks[depId] !== 0) fulfilled = false;
-/******/ 			}
-/******/ 			if(fulfilled) {
-/******/ 				deferredModules.splice(i--, 1);
-/******/ 				result = __webpack_require__(__webpack_require__.s = deferredModule[0]);
-/******/ 			}
-/******/ 		}
-/******/ 		return result;
-/******/ 	}
-/******/
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
-/******/
-/******/ 	// object to store loaded and loading chunks
-/******/ 	// undefined = chunk not loaded, null = chunk preloaded/prefetched
-/******/ 	// Promise = chunk loading, 0 = chunk loaded
-/******/ 	var installedChunks = {
-/******/ 		"app": 0
-/******/ 	};
-/******/
-/******/ 	var deferredModules = [];
 /******/
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
@@ -139,18 +80,9 @@ window["elektra"] =
 /******/ 	// __webpack_public_path__
 /******/ 	__webpack_require__.p = "";
 /******/
-/******/ 	var jsonpArray = window["webpackJsonpelektra"] = window["webpackJsonpelektra"] || [];
-/******/ 	var oldJsonpFunction = jsonpArray.push.bind(jsonpArray);
-/******/ 	jsonpArray.push = webpackJsonpCallback;
-/******/ 	jsonpArray = jsonpArray.slice();
-/******/ 	for(var i = 0; i < jsonpArray.length; i++) webpackJsonpCallback(jsonpArray[i]);
-/******/ 	var parentJsonpFunction = oldJsonpFunction;
 /******/
-/******/
-/******/ 	// add entry module to deferred list
-/******/ 	deferredModules.push(["./src/index.ts","vendor"]);
-/******/ 	// run deferred modules when ready
-/******/ 	return checkDeferredModules();
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = "./src/index.ts");
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -429,7 +361,6 @@ const bite_1 = __importDefault(__webpack_require__(/*! ./bite */ "./src/bite.ts"
 const css_1 = __importDefault(__webpack_require__(/*! ./css */ "./src/css.ts"));
 const event_1 = __importDefault(__webpack_require__(/*! ./event */ "./src/event.ts"));
 const property_1 = __importDefault(__webpack_require__(/*! ./property */ "./src/property.ts"));
-__webpack_require__(/*! proxy-polyfill */ "./node_modules/proxy-polyfill/src/index.js");
 exports.default = (d = document) => {
     const operation = operation_1.default(d);
     const driver = driver_1.default(operation.append);
@@ -460,7 +391,7 @@ exports.default = (d = document) => {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = (d = document) => {
-    const toNode = (element, clone = true) => {
+    const toNode = (element, clone = false) => {
         if (element !== Object(element)) {
             return d.createTextNode(`${element}`);
         }
@@ -469,30 +400,30 @@ exports.default = (d = document) => {
         }
         return element;
     };
-    const append = (...append) => (element, clone = true) => {
+    const append = (...append) => (element, clone = false) => {
         element.appendChild(append.reduce((flg, a) => {
             flg.appendChild(toNode(a, clone));
             return flg;
         }, d.createDocumentFragment()));
         return element;
     };
-    const prepend = (...append) => (element, clone = true) => {
+    const prepend = (...append) => (element, clone = false) => {
         element.insertBefore(append.reduce((flg, a) => {
             flg.appendChild(toNode(a, clone));
             return flg;
         }, d.createDocumentFragment()), element.firstChild);
         return element;
     };
-    const before = (append, ref) => (element, clone = true) => {
+    const before = (append, ref) => (element, clone = false) => {
         element.insertBefore(toNode(append, clone), ref);
         return element;
     };
-    const after = (append, ref) => (element, clone = true) => {
+    const after = (append, ref) => (element, clone = false) => {
         element.insertBefore(toNode(append, clone), ref.previousSibling);
         return element;
     };
-    const replace = (replace, old) => (element, clone = true) => {
-        element.replaceChild(toNode(replace, true), old);
+    const replace = (replace, old) => (element, clone = false) => {
+        element.replaceChild(toNode(replace, clone), old);
         return element;
     };
     return {
