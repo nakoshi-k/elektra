@@ -1,6 +1,6 @@
 import { FakeNodeListInterface as FakeNodeList } from "./fake-node-list";
 export declare type NodeLike = HTMLElement | HTMLCollection | NodeList | Document | FakeNodeList;
-export declare type FilterOrElement = (element: HTMLElement) => HTMLElement | HTMLElement | string;
+export declare type FilterOrElement = ((element: HTMLElement) => HTMLElement) | HTMLElement;
 export interface Driver {
     (element: NodeLike): (...filter: FilterOrElement[]) => NodeLike;
 }

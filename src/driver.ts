@@ -3,7 +3,7 @@ import fakeNodeList,{FakeNodeListInterface as FakeNodeList} from "./fake-node-li
 
 export type NodeLike = HTMLElement|HTMLCollection|NodeList|Document|FakeNodeList
 
-export type FilterOrElement = (element : HTMLElement) => HTMLElement|HTMLElement|string
+export type FilterOrElement =  ((element : HTMLElement) => HTMLElement )| HTMLElement
 
 export interface Driver{
     (element : NodeLike) : (...filter : FilterOrElement[]) => NodeLike
@@ -18,9 +18,9 @@ const drive = (element : HTMLElement , append = operaion(document).append ) =>
     filters.reduce( (element,filter : any ) => {
         if(typeof filter !=="function" ){
             if(Array.isArray(filter)){
-                return append(...filter)(element)
+                return append(...filter)(<HTMLElement>element)
             }
-            return append(filter)(element)
+            return append(filter)(<HTMLElement>element)
         }
         return filter(element)
     }, element);
@@ -38,3 +38,5 @@ export default ( append? : any ) => (nodeLike: NodeLike) =>
         });
         return <NodeLike>nodeLike
     }
+
+    

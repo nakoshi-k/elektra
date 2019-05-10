@@ -13,6 +13,11 @@ export default ( d = document ) => {
     const driver = $driver(operation.append)
     const create = $create(d,driver)
     const bite = $bite(driver)
+
+    const p = event.add.submit(e => {})
+
+    driver(create.div())(p)
+
     return {
         operation,
         driver,

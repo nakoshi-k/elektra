@@ -15,6 +15,8 @@ exports.default = (d = document) => {
     const driver = driver_1.default(operation.append);
     const create = create_1.default(d, driver);
     const bite = bite_1.default(driver);
+    const p = event_1.default.add.submit(e => { });
+    driver(create.div())(p);
     return {
         operation,
         driver,
